@@ -1,9 +1,14 @@
 import './App.css'
+import data from '../data.json'
+import Post from './components/Post'
 
 function App() {
   return (
     <>
-      <h1>Vite + React</h1>
+      {data.map((el) => (
+        <Post title={el.title} body={el.body} key={el.id} />
+      ))}
+      <hr />
     </>
   )
 }
