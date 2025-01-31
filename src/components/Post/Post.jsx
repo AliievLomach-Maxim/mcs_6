@@ -1,3 +1,5 @@
+import css from './Post.module.css'
+
 const Post = ({ id, title, body }) => {
   return (
     <>
@@ -6,7 +8,7 @@ const Post = ({ id, title, body }) => {
       {null}
       {''}
       {id && <p>2</p>}
-      <h2>Title: {title}</h2>
+      <h2 className={css.title}>Title: {title}</h2>
       <p>Description: {body}</p>
     </>
   )
