@@ -1,54 +1,112 @@
-import css from './App.module.css'
-import clsx from 'clsx'
-import Button from './components/Button/Button'
-import Card from './components/Card/Card'
-import Icon from './assets/react.svg'
+import { useState } from 'react'
+import posts from '../data.json'
+import Paginator from './components/Paginator/Paginator'
+import Post from './components/Post/Post'
 
-const isActive = false
+const App = () => {
+  const [postNumber, setPostNumber] = useState(1)
 
-function App() {
+  // const handleNext = () => {
+  //   if (postNumber === posts.length) setPostNumber(1)
+  //   else setPostNumber(postNumber + 1)
+  // }
+  const handleNext = () => {
+    setPostNumber(postNumber + 1)
+  }
+
+  const handlePrev = () => {
+    setPostNumber(postNumber - 1)
+  }
+
+  const isFirst = postNumber === 1
+  const isLast = postNumber === posts.length
+
+  const curPost = posts[postNumber - 1]
+
   return (
-    <>
-      <img src={Icon} alt='' />
-      <h1 className={clsx(css.title, isActive && css.active)}>Hello</h1>
-      <Button>Click</Button>
-      <br />
-      <Button variant='primary'>Click 2</Button>
-      <br />
-      <Button>Click 3</Button>
+    <div>
+      <Paginator
+        handleNext={handleNext}
+        handlePrev={handlePrev}
+        isFirst={isFirst}
+        isLast={isLast}
+        currentItem={postNumber}
+        total={posts.length}
+      />
       <hr />
-      <hr />
-      <Card>
-        <h1>Hello</h1>
-      </Card>
-      <Card>
-        <Button>Click</Button>
-        <br />
-        <Button variant='primary'>Click 2</Button>
-        <br />
-        <Button>Click 3</Button>
-      </Card>
-
-      <hr />
-      <hr />
-
-      {/* <Post title={'qwe'} body={'asd'} /> */}
-    </>
+      <Post body={curPost.body} title={curPost.title} />
+    </div>
   )
 }
 
 export default App
-// import './App.css'
-// import data from '../data.json'
+// import { useState } from 'react'
 
-// function App() {
+// const Clicker = ({ children, toChangeClicks, value }) => {
 //   return (
-//     <>
-//       {data.map((el) => (
-//         <Post title={el.title} body={el.body} key={el.id} />
-//       ))}
+//     <button onClick={toChangeClicks}>
+//       {children}: {value}
+//     </button>
+//   )
+// }
+// //
+// const App = () => {
+//   const [clicks, setClicks] = useState({
+//     value1: 0,
+//     value2: 10,
+//   })
+
+//   const handleClick = (key) => {
+//     setClicks({
+//       ...clicks,
+//       [key]: clicks[key] + 1,
+//     })
+//   }
+
+//   return (
+//     <div>
+//       <Clicker value={clicks.value1} toChangeClicks={() => handleClick('value1')}>
+//         Click 1
+//       </Clicker>
+//       <Clicker value={clicks.value2} toChangeClicks={() => handleClick('value2')}>
+//         Click 2
+//       </Clicker>
 //       <hr />
-//     </>
+//       <h1>Total:{clicks.value1 + clicks.value2}</h1>
+//     </div>
+//   )
+// }
+
+// export default App
+// Підняття стану
+// import { useState } from 'react'
+
+// const Clicker = ({ children, toChangeClicks, counter }) => {
+//   return (
+//     <button onClick={toChangeClicks}>
+//       {children}: {counter}
+//     </button>
+//   )
+// }
+// //
+// const App = () => {
+//   const [clicks, setClicks] = useState(0)
+
+//   const handleClick = () => {
+//     setClicks(clicks + 1)
+//   }
+//   return (
+//     <div>
+//       <Clicker counter={clicks} toChangeClicks={handleClick}>
+//         Click 1
+//       </Clicker>
+//       <Clicker counter={clicks} toChangeClicks={handleClick}>
+//         Click 2
+//       </Clicker>
+//       <h1>Total:{clicks}</h1>
+//       <hr />
+//       {/* <button onClick={handleClick}>clicks: {counter}</button> */}
+//     </div>
 //   )
 // }
 
