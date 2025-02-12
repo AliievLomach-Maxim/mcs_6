@@ -1,4 +1,5 @@
-import ControlledForm from './components/ControlledForm/ControlledForm'
+// import ControlledForm from './components/ControlledForm/ControlledForm'
+import FormikForm from './components/FormikForm/FormikForm'
 // import DefForm from './components/DefForm/DefForm'
 
 const App = () => {
@@ -15,7 +16,8 @@ const App = () => {
 
   return (
     <div>
-      <ControlledForm save={onSave} />
+      {/* <ControlledForm save={onSave} /> */}
+      <FormikForm save={onSave} />
 
       {/* <DefForm save={sendToFirstApi} />
       <DefForm save={sendToSecondApi} /> */}
