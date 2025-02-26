@@ -1,10 +1,14 @@
-import { Link, Outlet, useParams } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { fetchSingleProduct } from '../api/products'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 
 const ProductDetailsPage = () => {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const backLink = useRef(location.state ?? '/products')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,8 +18,16 @@ const ProductDetailsPage = () => {
     fetchData()
   }, [id])
 
+  const handleBack = () => {
+    const res = prompt('Are your sure?')
+    if (res !== null) {
+      navigate(backLink.current)
+    }
+  }
   return (
     <div>
+      <button onClick={handleBack}>Back</button>
+      {/* <Link to={location.state}>{`<`} Back</Link> */}
       {product && (
         <>
           <div>
@@ -32,7 +44,9 @@ const ProductDetailsPage = () => {
               <Link to='images'>Images</Link>
             </li>
           </ul>
-          <Outlet />
+          <Suspense fallback={<p>Loading child component..</p>}>
+            <Outlet />
+          </Suspense>
         </>
       )}
     </div>

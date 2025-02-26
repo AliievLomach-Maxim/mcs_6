@@ -1,13 +1,16 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const Product = ({ product }) => {
-  console.log('product', product)
+  const location = useLocation()
+  // navigate(location.state, { state: location })
   return (
     <div>
       <h2>{product.title}</h2>
       <p>{product.description}</p>
       <p>{product.price}</p>
-      <Link to={`${product.id}`}>Details</Link>
+      <Link to={`${product.id}`} state={location}>
+        Details
+      </Link>
     </div>
   )
 }
