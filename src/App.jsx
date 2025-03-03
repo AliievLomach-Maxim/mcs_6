@@ -1,11 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
 import Navigation from './components/Navigation/Navigation'
-// import HomePage from './Pages/HomePage'
-// import ArticlesPage from './Pages/ArticlesPage'
-// import ProductsPage from './Pages/ProductsPage'
-// import ProductDetailsPage from './Pages/ProductDetailsPage'
-// import Category from './components/Category/Category'
-// import Images from './components/Images/Images'
 import { lazy, Suspense } from 'react'
 
 const HomePage = lazy(() => import('./Pages/HomePage'))
