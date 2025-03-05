@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import Navigation from './components/Navigation/Navigation'
 import { lazy, Suspense } from 'react'
+import TodosPage from './Pages/TodosPage'
 
 const HomePage = lazy(() => import('./Pages/HomePage'))
 const ArticlesPage = lazy(() => import('./Pages/ArticlesPage'))
@@ -23,6 +24,7 @@ const App = () => {
             <Route path='category' element={<Category />} />
             <Route path='images' element={<Images />} />
           </Route>
+          <Route path='/todos' element={<TodosPage />} />
           <Route path='*' element={<div>404 page</div>} />
         </Routes>
       </Suspense>

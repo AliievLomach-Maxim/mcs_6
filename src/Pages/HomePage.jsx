@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment, language } from '../store/store'
+import { decrement, increment } from '../store/counterSlice'
+import { language } from '../store/localeSlice'
 
 const HomePage = () => {
   const value = useSelector((state) => state.counter.value)

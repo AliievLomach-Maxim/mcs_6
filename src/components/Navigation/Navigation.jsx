@@ -24,6 +24,11 @@ const Navigation = () => {
             Products
           </NavLink>
         </li>
+        <li>
+          <NavLink className={getActiveLink} to='/todos'>
+            Todos
+          </NavLink>
+        </li>
       </ul>
     </nav>
   )
