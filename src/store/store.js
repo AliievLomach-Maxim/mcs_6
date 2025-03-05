@@ -1,43 +1,50 @@
-import { combineReducers, createStore } from 'redux'
-import { composeWithDevTools } from '@redux-devtools/extension'
 import { counterReducer } from './counterSlice'
 import { localeReducer } from './localeSlice'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { todoReducer } from './todoSlice'
 
-const rootReducer = combineReducers({
-  counter: counterReducer,
-  locale: localeReducer,
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+
+const persistConfigLang = {
+  key: 'lang',
+  storage,
+}
+
+const persistConfigCounter = {
+  key: 'counter',
+  storage,
+}
+
+const localePersistedReducer = persistReducer(persistConfigLang, localeReducer)
+const counterPersistedReducer = persistReducer(persistConfigCounter, counterReducer)
+
+const rootReducer = {
+  counter: counterPersistedReducer,
+  locale: localePersistedReducer,
+  todos: todoReducer,
+}
+
+export const store = configureStore({
+  reducer: rootReducer,
 })
 
-export const store = createStore(rootReducer, composeWithDevTools())
+export const persistor = persistStore(store)
+// const rootReducer = combineReducers({
+//   counter: counterReducer,
+//   locale: localeReducer,
+//   todos: todoReducer,
+// })
 
-// const reducer = (state = initialState, action) => {
-//   switch (action.type) {
-//     case 'increment':
-//       return {
-//         ...state,
-//         counter: {
-//           ...state.counter,
-//           value: state.counter.value + action.payload,
-//         },
-//       }
-//     case 'decrement':
-//       return {
-//         ...state,
-//         counter: {
-//           ...state.counter,
-//           value: state.counter.value - action.payload,
-//         },
-//       }
-//     case 'language':
-//       return {
-//         ...state,
-//         locale: {
-//           ...state.locale,
-//           lang: action.payload,
-//         },
-//       }
-
-//     default:
-//       return state
-//   }
+// const persistConfig = {
+//   key: 'root',
+//   storage,
 // }
+
+// const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+// export const store = configureStore({
+//   reducer: persistedReducer,
+// })
+
+// export const persistor = persistStore(store)
