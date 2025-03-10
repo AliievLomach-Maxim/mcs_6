@@ -1,10 +1,20 @@
 import { counterReducer } from './counterSlice'
 import { localeReducer } from './localeSlice'
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import { todoReducer } from './todoSlice'
 
-import { persistStore, persistReducer } from 'redux-persist'
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import { articlesReducer } from './articles/articlesSlice'
 
 const persistConfigLang = {
   key: 'lang',
@@ -23,10 +33,17 @@ const rootReducer = {
   counter: counterPersistedReducer,
   locale: localePersistedReducer,
   todos: todoReducer,
+  articles: articlesReducer,
 }
 
 export const store = configureStore({
   reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 })
 
 export const persistor = persistStore(store)
