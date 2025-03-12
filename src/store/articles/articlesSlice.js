@@ -1,13 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { createArticle, deleteArticle, getArticles } from './articlesOptions'
+import { createSelector, createSlice } from '@reduxjs/toolkit'
+import { createArticle, deleteArticle, getArticles } from './articlesOperations'
+import { selectFilterArticles } from '../filterSlice'
 
 const articlesSlice = createSlice({
   name: 'articles',
   initialState: {
     items: [],
-    loading: false,
-    error: false,
-    errorMessage: '',
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -21,66 +19,51 @@ const articlesSlice = createSlice({
       .addCase(deleteArticle.fulfilled, (state, { payload }) => {
         state.items = state.items.filter((el) => el.id !== payload.id)
       })
-      // .addCase(updateArticle.fulfilled, (state, { payload }) => {
-      //   state.items.push(payload)
-      // })
-      .addMatcher(
-        ({ type }) => type.endsWith('/pending'),
-        (state) => {
-          state.loading = true
-          state.error = false
-        }
-      )
-      .addMatcher(
-        ({ type }) => type.endsWith('/rejected'),
-        (state) => {
-          state.error = true
-          state.loading = false
-        }
-      )
-      .addMatcher(
-        ({ type }) => type.endsWith('/fulfilled'),
-        (state) => {
-          state.loading = false
-        }
-      )
-    // builder
-    //   .addCase(getArticles.pending, (state) => {
+    // .addMatcher(
+    //   ({ type }) => type.endsWith('articles/pending'),
+    //   (state) => {
     //     state.loading = true
-    //   })
-    //   .addCase(getArticles.fulfilled, (state, { payload }) => {
-    //     state.items = payload
-    //     state.loading = false
-    //   })
-    //   .addCase(getArticles.rejected, (state, action) => {
+    //     state.error = false
+    //   }
+    // )
+    // .addMatcher(
+    //   ({ type }) => type.endsWith('articles/rejected'),
+    //   (state) => {
     //     state.error = true
     //     state.loading = false
-    //     // state.errorMessage = payload
-    //     state.errorMessage = action.error.message
-    //   })
-    //   .addCase(createArticle.pending, (state) => {
-    //     state.loading = true
-    //   })
-    //   .addCase(createArticle.fulfilled, (state, { payload }) => {
-    //     state.items.push(payload)
+    //   }
+    // )
+    // .addMatcher(
+    //   ({ type }) => type.endsWith('articles/fulfilled'),
+    //   (state) => {
     //     state.loading = false
-    //   })
-    //   .addCase(createArticle.rejected, (state) => {
-    //     state.error = true
-    //     state.loading = false
-    //   })
-    //   .addCase(deleteArticle.pending, (state) => {
-    //     state.loading = true
-    //   })
-    //   .addCase(deleteArticle.fulfilled, (state, { payload }) => {
-    //     state.items.push(payload)
-    //     state.loading = false
-    //   })
-    //   .addCase(deleteArticle.rejected, (state) => {
-    //     state.error = true
-    //     state.loading = false
-    //   })
+    //   }
+    // )
   },
 })
 
 export const articlesReducer = articlesSlice.reducer
+
+export const selectArticles = (state) => {
+  return state.articles.items
+}
+// export const selectArticlesLoading = (state) => {
+//   return state.articles.loading
+// }
+// export const selectArticlesError = (state) => {
+//   return state.articles.error
+// }
+// export const selectFilteredArticles = (state) => {
+//   const items = selectArticles(state)
+//   const query = selectFilterArticles(state)
+//   console.log('selectFilteredArticles')
+
+//   return items.filter((el) => el.name.toLowerCase().includes(query.toLowerCase()))
+// }
+
+export const selectFilteredArticles = createSelector(
+  [selectArticles, selectFilterArticles],
+  (items, query) => {
+    return items.filter((el) => el.name.toLowerCase().includes(query.toLowerCase()))
+  }
+)

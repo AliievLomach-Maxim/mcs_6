@@ -15,6 +15,9 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { articlesReducer } from './articles/articlesSlice'
+import { filterReducer } from './filterSlice'
+import { postsReducer } from './posts/postsSlice'
+import { rootReducer } from './rootSlice'
 
 const persistConfigLang = {
   key: 'lang',
@@ -29,15 +32,18 @@ const persistConfigCounter = {
 const localePersistedReducer = persistReducer(persistConfigLang, localeReducer)
 const counterPersistedReducer = persistReducer(persistConfigCounter, counterReducer)
 
-const rootReducer = {
+const mainReducer = {
   counter: counterPersistedReducer,
   locale: localePersistedReducer,
   todos: todoReducer,
   articles: articlesReducer,
+  filter: filterReducer,
+  posts: postsReducer,
+  root: rootReducer,
 }
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: mainReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
